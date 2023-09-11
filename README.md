@@ -15,7 +15,7 @@ Running this program should generate the LLVM IR of your BF code in `program.bf`
 
 To compile the IR to a binary, use
 ```console
-`./mini-brain | clang -x ir -`
+./mini-brain | clang -x ir -
 ```
 
-Lastly, run `./a.out` to see what your program's result!
+Lastly, run `./a.out` to see your program's result!
