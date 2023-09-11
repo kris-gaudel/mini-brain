@@ -83,9 +83,9 @@ class IncrementPtrNode : public ASTNode {
     void codeGen() override {
         AllocaInst *ptr = NamedValues["pos"];
 
-        Value *toAdd = ConstantInt::get(Type::getInt32Ty(*TheContext), 1);
+        Value *toAdd = ConstantInt::get(Type::getInt64Ty(*TheContext), 1);
         Value *currentVal = Builder->CreateLoad(ptr->getAllocatedType(), ptr, "pos");
-        Value *newVal = Builder->CreateAdd(currentVal, toAdd, "new pos");
+        Value *newVal = Builder->CreateAdd(currentVal, toAdd, "new position");
         Builder->CreateStore(newVal, ptr);
     }
 };
@@ -99,9 +99,9 @@ class DecrementPtrNode : public ASTNode {
     void codeGen() override {
         AllocaInst *ptr = NamedValues["pos"];
 
-        Value *toSub = ConstantInt::get(Type::getInt32Ty(*TheContext), 1);
+        Value *toSub = ConstantInt::get(Type::getInt64Ty(*TheContext), 1);
         Value *currentVal = Builder->CreateLoad(ptr->getAllocatedType(), ptr, "pos");
-        Value *newVal = Builder->CreateSub(currentVal, toSub, "new pos");
+        Value *newVal = Builder->CreateSub(currentVal, toSub, "new position");
         Builder->CreateStore(newVal, ptr);
     }
 };
@@ -155,7 +155,7 @@ class OutputNode : public ASTNode {
 
     void codeGen() override {
         FunctionType* outCharType = FunctionType::get(
-            Type::getInt32Ty(*TheContext), 
+            Type::getInt64Ty(*TheContext), 
             {Type::getInt8Ty(*TheContext)}, 
             false
         );
@@ -181,7 +181,7 @@ class InputNode : public ASTNode {
 
     void codeGen() override {
         FunctionType* inCharType = FunctionType::get(
-            Type::getInt32Ty(*TheContext), 
+            Type::getInt64Ty(*TheContext), 
             {}, 
             false
         );
@@ -405,6 +405,7 @@ int main() {
     in.close();
 
     llvmInit();
+
     root->codeGen();
 
     Function *main = TheModule->getFunction("main");
